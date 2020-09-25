@@ -8,12 +8,13 @@ use Negotiation\Exception\InvalidHeader;
 abstract class AbstractNegotiator
 {
     /**
-     * @param string $header     A string containing an `Accept|Accept-*` header.
-     * @param array  $priorities A set of server priorities.
+     * @param string $header A string containing an `Accept|Accept-*` header.
+     * @param array $priorities A set of server priorities.
+     * @param bool $strict
      *
      * @return AcceptHeader|null best matching type
      */
-    public function getBest($header, array $priorities, $strict = false)
+    public function getBest(string $header, array $priorities, bool $strict = false): ?AcceptHeader
     {
         if (empty($priorities)) {
             throw new InvalidArgument('A set of server priorities should be given.');
@@ -55,9 +56,9 @@ abstract class AbstractNegotiator
     /**
      * @param string $header A string containing an `Accept|Accept-*` header.
      *
-     * @return [AcceptHeader] An ordered list of accept header elements
+     * @return AcceptHeader[] An ordered list of accept header elements
      */
-    public function getOrderedElements($header)
+    public function getOrderedElements(string $header): array
     {
         if (!$header) {
             throw new InvalidArgument('The header string should not be empty.');
@@ -78,7 +79,7 @@ abstract class AbstractNegotiator
         // sort based on quality and then original order. This is necessary as
         // to ensure that the first in the list for two items with the same
         // quality stays in that order in both PHP5 and PHP7.
-        uasort($orderKeys, function ($a, $b) {
+        uasort($orderKeys, function ($a, $b): int {
             $qA = $a[0];
             $qB = $b[0];
 
@@ -102,7 +103,7 @@ abstract class AbstractNegotiator
      *
      * @return AcceptHeader Parsed header object
      */
-    abstract protected function acceptFactory($header);
+    abstract protected function acceptFactory(string $header): AcceptHeader;
 
     /**
      * @param AcceptHeader $header
@@ -111,7 +112,7 @@ abstract class AbstractNegotiator
      *
      * @return AcceptMatch|null Headers matched
      */
-    protected function match(AcceptHeader $header, AcceptHeader $priority, $index)
+    protected function match(AcceptHeader $header, AcceptHeader $priority, int $index): ?AcceptMatch
     {
         $ac = $header->getType();
         $pc = $priority->getType();
@@ -130,9 +131,9 @@ abstract class AbstractNegotiator
     /**
      * @param string $header A string that contains an `Accept*` header.
      *
-     * @return AcceptHeader[]
+     * @return string[]
      */
-    private function parseHeader($header)
+    private function parseHeader(string $header): array
     {
         $res = preg_match_all('/(?:[^,"]*+(?:"[^"]*+")?)+[^,"]*+/', $header, $matches);
 
@@ -145,11 +146,11 @@ abstract class AbstractNegotiator
 
     /**
      * @param AcceptHeader[] $headerParts
-     * @param Priority[]     $priorities  Configured priorities
+     * @param AcceptHeader[] $priorities  Configured priorities
      *
      * @return AcceptMatch[] Headers matched
      */
-    private function findMatches(array $headerParts, array $priorities)
+    private function findMatches(array $headerParts, array $priorities): array
     {
         $matches = [];
         foreach ($priorities as $index => $p) {

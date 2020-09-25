@@ -32,7 +32,7 @@ abstract class BaseAccept
     /**
      * @param string $value
      */
-    public function __construct($value)
+    public function __construct(?string $value)
     {
         list($type, $parameters) = $this->parseParameters($value);
 
@@ -49,42 +49,30 @@ abstract class BaseAccept
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return string
-     */
-    public function getNormalizedValue()
+    public function getNormalizedValue(): string
     {
         return $this->normalized;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return float
-     */
-    public function getQuality()
+    public function getQuality(): float
     {
         return $this->quality;
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -95,17 +83,15 @@ abstract class BaseAccept
      *
      * @return string|null
      */
-    public function getParameter($key, $default = null)
+    public function getParameter(string $key, $default = null)
     {
         return isset($this->parameters[$key]) ? $this->parameters[$key] : $default;
     }
 
     /**
      * @param string $key
-     *
-     * @return boolean
      */
-    public function hasParameter($key)
+    public function hasParameter(string $key): bool
     {
         return isset($this->parameters[$key]);
     }
@@ -113,9 +99,9 @@ abstract class BaseAccept
     /**
      *
      * @param  string $acceptPart
-     * @return array
+     * @return string[][]
      */
-    private function parseParameters($acceptPart)
+    private function parseParameters(?string $acceptPart): array
     {
         $parts = explode(';', $acceptPart);
         $type  = array_shift($parts);
@@ -135,12 +121,7 @@ abstract class BaseAccept
         return [ $type, $parameters ];
     }
 
-    /**
-     * @param string $parameters
-     *
-     * @return string
-     */
-    private function buildParametersString($parameters)
+    private function buildParametersString(array $parameters): string
     {
         $parts = [];
 

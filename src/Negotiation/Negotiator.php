@@ -7,7 +7,7 @@ class Negotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function acceptFactory($accept)
+    protected function acceptFactory(string $accept): AcceptHeader
     {
         return new Accept($accept);
     }
@@ -15,7 +15,7 @@ class Negotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function match(AcceptHeader $accept, AcceptHeader $priority, $index)
+    protected function match(AcceptHeader $accept, AcceptHeader $priority, int $index): ?AcceptMatch
     {
         if (!$accept instanceof Accept || !$priority instanceof Accept) {
             return null;
@@ -77,8 +77,9 @@ class Negotiator extends AbstractNegotiator
      * For media-types of the form "application/vnd.example+json", matching
      * should allow wildcards for either the portion before the "+" or
      * after. This method splits the subpart to allow such matching.
+     * @return mixed[]|string[]
      */
-    protected function splitSubPart($subPart)
+    protected function splitSubPart($subPart): array
     {
         if (!strstr($subPart, '+')) {
             return [$subPart, ''];

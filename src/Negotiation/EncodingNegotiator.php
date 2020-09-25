@@ -7,7 +7,7 @@ class EncodingNegotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function acceptFactory($accept)
+    protected function acceptFactory(string $accept): AcceptHeader
     {
         return new AcceptEncoding($accept);
     }

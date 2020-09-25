@@ -7,7 +7,7 @@ class LanguageNegotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function acceptFactory($accept)
+    protected function acceptFactory(string $accept): AcceptHeader
     {
         return new AcceptLanguage($accept);
     }
@@ -15,7 +15,7 @@ class LanguageNegotiator extends AbstractNegotiator
     /**
      * {@inheritdoc}
      */
-    protected function match(AcceptHeader $acceptLanguage, AcceptHeader $priority, $index)
+    protected function match(AcceptHeader $acceptLanguage, AcceptHeader $priority, int $index): ?AcceptMatch
     {
         if (!$acceptLanguage instanceof AcceptLanguage || !$priority instanceof AcceptLanguage) {
             return null;
@@ -30,7 +30,7 @@ class LanguageNegotiator extends AbstractNegotiator
         $baseEqual = !strcasecmp($ab, $pb);
         $subEqual  = !strcasecmp($as, $ps);
 
-        if (($ab == '*' || $baseEqual) && ($as === null || $subEqual)) {
+        if (($ab === '*' || $baseEqual) && ($as === null || $subEqual)) {
             $score = 10 * $baseEqual + $subEqual;
 
             return new AcceptMatch($acceptLanguage->getQuality() * $priority->getQuality(), $score, $index);

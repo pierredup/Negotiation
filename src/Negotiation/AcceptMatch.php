@@ -19,7 +19,7 @@ final class AcceptMatch
      */
     public $index;
 
-    public function __construct($quality, $score, $index)
+    public function __construct(float $quality, int $score, int $index)
     {
         $this->quality = $quality;
         $this->score   = $score;
@@ -29,10 +29,8 @@ final class AcceptMatch
     /**
      * @param AcceptMatch $a
      * @param AcceptMatch $b
-     *
-     * @return int
      */
-    public static function compare(AcceptMatch $a, AcceptMatch $b)
+    public static function compare(AcceptMatch $a, AcceptMatch $b): int
     {
         if ($a->quality !== $b->quality) {
             return $a->quality > $b->quality ? -1 : 1;
@@ -46,12 +44,12 @@ final class AcceptMatch
     }
 
     /**
-     * @param array   $carry reduced array
+     * @param mixed[]   $carry reduced array
      * @param AcceptMatch $match match to be reduced
      *
      * @return AcceptMatch[]
      */
-    public static function reduce(array $carry, AcceptMatch $match)
+    public static function reduce(array $carry, AcceptMatch $match): array
     {
         if (!isset($carry[$match->index]) || $carry[$match->index]->score < $match->score) {
             $carry[$match->index] = $match;

@@ -6,11 +6,17 @@ use Negotiation\Exception\InvalidMediaType;
 
 final class Accept extends BaseAccept implements AcceptHeader
 {
+    /**
+     * @var string
+     */
     private $basePart;
 
+    /**
+     * @var string
+     */
     private $subPart;
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
         parent::__construct($value);
 
@@ -28,18 +34,12 @@ final class Accept extends BaseAccept implements AcceptHeader
         $this->subPart  = $parts[1];
     }
 
-    /**
-     * @return string
-     */
-    public function getSubPart()
+    public function getSubPart(): string
     {
         return $this->subPart;
     }
 
-    /**
-     * @return string
-     */
-    public function getBasePart()
+    public function getBasePart(): string
     {
         return $this->basePart;
     }

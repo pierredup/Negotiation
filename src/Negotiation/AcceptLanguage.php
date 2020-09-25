@@ -6,11 +6,22 @@ use Negotiation\Exception\InvalidLanguage;
 
 final class AcceptLanguage extends BaseAccept implements AcceptHeader
 {
+    /**
+     * @var string
+     */
     private $language;
+
+    /**
+     * @var string
+     */
     private $script;
+
+    /**
+     * @var string
+     */
     private $region;
 
-    public function __construct($value)
+    public function __construct(?string $value)
     {
         parent::__construct($value);
 
@@ -31,18 +42,12 @@ final class AcceptLanguage extends BaseAccept implements AcceptHeader
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getSubPart()
+    public function getSubPart(): ?string
     {
         return $this->region;
     }
 
-    /**
-     * @return string
-     */
-    public function getBasePart()
+    public function getBasePart(): ?string
     {
         return $this->language;
     }
